@@ -12,15 +12,15 @@ public class BeanExampleApplication {
 		SpringApplication.run(BeanExampleApplication.class, args);
 	}
 
-	@Bean
+	@Bean //Methode init erzeugt ein Bean
 	CommandLineRunner init() {
-		CommandLineRunner action = new CommandLineRunner() {
+		CommandLineRunner action = new CommandLineRunner() { //Interface von Spring, anonymes (sofort nutzbares), inneres Objekt 
 			@Override
-			public void run(String... args) throws Exception {
+			public void run(String... args) throws Exception { //beliebig viele String-Werte können übergeben werden, sie werden automatisch in ein String-Array umgewandelt
 				System.out.println("Hello World!");
 			}
 		};
-		return action;
+		return action; //CommandLineRunner Objekt "action" wird zurückgegeben und von Spring verwaltet
 	}
 
 }

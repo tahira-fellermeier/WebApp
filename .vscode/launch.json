@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Notendurchschnitt",
+            "request": "launch",
+            "mainClass": "Notendurchschnitt",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "UserApplication",
             "request": "launch",
             "mainClass": "edu.fra.uas.UserApplication",

@@ -7,16 +7,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import edu.fra.uas.controller.BeanController;
+import edu.fra.uas.service.MessageService;
 
 @SpringBootTest
 public class ControllerTest {
     
     @Autowired
     private BeanController beanController;
+    @Autowired
+    private MessageService messageService;
 
     @Test
     void testController() {
-        assertThat(beanController.putMessage("Das ist ein Test")).isEqualTo("Das ist ein Test");
+        assertThat(beanController.putMessage("Das ist ein Test")).isEqualTo(" put messgae: Das ist ein Test");
+    }
+
+    @Test
+    void incrementController(){
+        int expectedCount = 2;
+        assertThat(messageService.increment(1)).isEqualTo(expectedCount);
+
     }
 
 }
