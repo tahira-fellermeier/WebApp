@@ -6,9 +6,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ApplicationInitializer {
 
     public static void main(String[] args) {
-        ApplicationInitializer  applicationInitializer  = new ApplicationInitializer();
-//        applicationInitializer .startupXML();
-        applicationInitializer .startupAnnotation();
+        ApplicationInitializer  applicationInitializer  = new ApplicationInitializer(); //
+        applicationInitializer .startupXML(); // alte Methode, die von Annotation ersetzt wird 
+//        applicationInitializer .startupAnnotation();
     }
 
     public void startupXML() {

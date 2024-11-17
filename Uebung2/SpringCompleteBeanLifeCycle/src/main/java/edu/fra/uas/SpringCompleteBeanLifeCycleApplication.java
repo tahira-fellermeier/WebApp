@@ -12,7 +12,7 @@ import edu.fra.uas.service.CompleteService;
 public class SpringCompleteBeanLifeCycleApplication {
 
 	@Autowired
-	private CompleteService smallService;
+	private CompleteService smallService; // Bean erstellt sobald notwendig
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringCompleteBeanLifeCycleApplication.class, args);

@@ -22,17 +22,17 @@ public class SmallService {
 	@PostConstruct
     public void postConstruct() {
 		log.info("postConstruct() -->  " + state);
-		state = "PostConstruct";
+		state = "PostConstruct"; //Ändert state
 		log.info("postConstruct() -->  " + state);
 	}
 	
-	public void doSomething() {
+	public void doSomething() { // wie getState()
 		log.info("doSomething() --> " + state);
 	}
 	
 	@PreDestroy
     public void preDestroy() {
-		state = "PreDestroy";
+		state = "PreDestroy"; //ändert state
 		log.info("preDestroy() --> " + state);
 	}
 	

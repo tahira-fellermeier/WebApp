@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  *
  *  </bean>
  */
-@Configuration
+@Configuration //
 public class ApplicationConfig {
 
     @Bean

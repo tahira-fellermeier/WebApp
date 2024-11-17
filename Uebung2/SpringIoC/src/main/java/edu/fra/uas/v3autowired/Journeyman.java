@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Journeyman {
-//    @Autowired
-///   @Qualifier("pleasePaint")
+    @Autowired // erzeuge mir einen instanz sobald notig
+    @Qualifier("please Clean")//Programme sucht in allen möglichen Implementierung von Work nach "pleaseDrill" und legt dann ein Objekt an
     Work work;
 
     public void performWork() {

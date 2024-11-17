@@ -9,7 +9,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CustomBeanPostProcessor implements BeanPostProcessor {
+public class CustomBeanPostProcessor implements BeanPostProcessor { //implementiert das BeanPostProcessor-Interface, um Beans zu bearbeiten, bevor u. nachdem sie initialisiert werden.
 
 	private static final Logger log = LoggerFactory.getLogger(CustomBeanPostProcessor.class);
 	

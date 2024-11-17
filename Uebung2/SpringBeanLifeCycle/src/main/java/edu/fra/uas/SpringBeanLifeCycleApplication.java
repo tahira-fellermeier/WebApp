@@ -14,17 +14,17 @@ public class SpringBeanLifeCycleApplication {
 	@Autowired
 	private SmallService smallService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringBeanLifeCycleApplication.class, args);
+	public static void main(String[] args) { //Einstieg
+		SpringApplication.run(SpringBeanLifeCycleApplication.class, args); //Application starten
 	}
 
-	@Bean
+	@Bean //Methode gibt ein Bean (Instanz von CommandLineRunner) zurück
 	CommandLineRunner init() {
 		CommandLineRunner action = new CommandLineRunner() {
 
 			@Override
 			public void run(String... args) throws Exception {
-				smallService.doSomething();
+				smallService.doSomething(); //ruft die Methode doSomething der Klasse SmallService auf
 			}
 		};
 		return action;
