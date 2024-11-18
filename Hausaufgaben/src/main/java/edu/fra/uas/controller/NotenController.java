@@ -24,8 +24,8 @@ public class NotenController {
         notenService.getModul(modul);
     }
 
-    public void getNote(double note) {
-        notenService.getNote(note);
+    public void getNote(String modul) {
+        notenService.getNote(modul);
     }
 
     public void notenListe() {

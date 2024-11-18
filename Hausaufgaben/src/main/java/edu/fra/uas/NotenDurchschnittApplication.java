@@ -1,4 +1,4 @@
-package main.java.edu.fra.uas;
+package edu.fra.uas;
 
 import java.util.Scanner;
 
@@ -9,8 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import edu.fra.uas.controller.NotenController;
-import service.NotenService;
-import edu.fra.uas.Noten;
 
 @SpringBootApplication
 public class NotenDurchschnittApplication {
@@ -34,7 +32,7 @@ public class NotenDurchschnittApplication {
 
                 while (run) {
                     System.out.print(
-                            "Bitte wählen Sie eine Aktion: \n1. Note eintragen\n2. Note ändern\n3. Modulname ändern\n4. Note (und Modul) löschen\n5. Notenliste ausgeben\n6. Notendurchschnitt berechnen\7.Modul aussuchen\n8. Programme beenden");
+                            "Bitte wählen Sie eine Aktion: \n1. Note eintragen\n2. Note ändern\n3. Modulname ändern\n4. Note (und Modul) löschen\n5. Notenliste ausgeben\n6. Notendurchschnitt berechnen\n7. Modul aussuchen\n8. Programme beenden");
                     int auswahl = scan.nextInt();
 
                     switch (auswahl) {
@@ -49,7 +47,7 @@ public class NotenDurchschnittApplication {
                         case 2:
                             System.out.print("Modulname eintragen: ");
                             modul = scan.next();
-                            if (notenController.noteVorhanden(modul)) {
+                            if (notenController.modulVorhanden(modul)) {
                                 System.out.println("Neue Note eintragen: ");
                                 double neueNote = scan.nextDouble();
                                 notenController.changeNote(modul, neueNote);
@@ -60,7 +58,7 @@ public class NotenDurchschnittApplication {
                         case 3:
                             System.out.print("Bisherige Modulname eintragen: ");
                             modul = scan.next();
-                            if (notenController.noteVorhanden(modul)) {
+                            if (notenController.modulVorhanden(modul)) {
                                 System.out.println("Neue Modulname eintragen: ");
                                 String neueModul = scan.next();
                                 notenController.changeModul(modul, neueModul);
@@ -81,7 +79,7 @@ public class NotenDurchschnittApplication {
                             if (notenController.checkEmptyList()) {
                                 System.out.println("Keine Noten vorhanden");
                             } else
-                            notenController.notenListe();
+                                notenController.notenListe();
                             break;
                         case 6:
                             if (notenController.checkEmptyList()) {
@@ -102,14 +100,17 @@ public class NotenDurchschnittApplication {
                             run = false;
                             System.out.println("Programme beendet");
                             break;
-                            scan.close();
 
                         default:
                             System.out.println("Ungültige eingabe");
                             break;
-                    }
+                    } 
+
+                    System.out.println("");
+
                 }
-                
+                scan.close();
+
             }
 
         };

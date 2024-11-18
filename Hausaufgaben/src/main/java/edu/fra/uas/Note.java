@@ -1,17 +1,12 @@
 package edu.fra.uas;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import edu.fra.uas.controller.BeanController;
-
 //@component
-public class Noten {
+public class Note {
 
 	public String modul;
 	public double note;
 
-	public Noten(String modul, double note) {
+	public Note(String modul, double note) {
 		super();
 		this.modul = modul;
 		this.note = note;

@@ -8,6 +8,13 @@
             "type": "java",
             "name": "NotenDurchschnittApplication",
             "request": "launch",
+            "mainClass": "edu.fra.uas.NotenDurchschnittApplication",
+            "projectName": "Hausaufgaben"
+        },
+        {
+            "type": "java",
+            "name": "NotenDurchschnittApplication",
+            "request": "launch",
             "mainClass": "main.java.edu.fra.uas.NotenDurchschnittApplication",
             "projectName": ""
         },
