@@ -14,7 +14,7 @@ class ServiceTest {
 	private NotenService notenService;
 
 	@Test
-	void contextLoads() {
+	void testService() {
 		System.out.println("Testbeginn");
 		notenService.addNote("Statistik", 1);
 		notenService.addNote("Web", 2);

@@ -11,8 +11,8 @@ import edu.fra.uas.service.FirstService;
 @SpringBootApplication
 public class SpringDependencyInjectionApplication {
 	
-	@Autowired
-//	private FirstService firstService;
+	@Autowired// @service
+	private FirstService firstService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringDependencyInjectionApplication.class, args);
@@ -24,7 +24,15 @@ public class SpringDependencyInjectionApplication {
 
 			@Override
 			public void run(String... args) throws Exception {
-				FirstService firstService = new FirstService();
+				
+				//FirstService firstService = new FirstService();
+				// ...
+				//..
+				//..
+				//..
+				//..
+				//..
+				//..
 				firstService.doSomething();
 			}
 		};

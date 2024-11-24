@@ -7,20 +7,20 @@ import org.springframework.stereotype.Service;
 public class FirstService {
 
 	// Constructor Injection: im ersten Schritt auskommentieren
-	// @Autowired
+	//@Autowired //so geht, ist aber aufwendig
 	private SecondService secondService;
 
-	////public FirstService() {
-		// secondService = new SecondService();
-	}
+	//public FirstService() {
+	//	secondService = new SecondService();
+	//}
 
 	// Constructor Injection
 	@Autowired
-	public FirstService(SecondService secondService) {
+	public FirstService(SecondService secondService) { //Diese Art sieht man am meisten. Viele Beans auf einmal verwalten, @autowired nur einmal schreinben
 		this.secondService = secondService;
 	}
 
-	// Setter Injection
+	// Setter Injection //zu veraltet, überspringen. Man sieht es in Firmen auch nicht mehr
 	// @Autowired
 	// public void setSecondService(SecondService secondService) {
 	// this.secondService = secondService;

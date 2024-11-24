@@ -15,7 +15,7 @@ public class SpringCompleteBeanLifeCycleApplication {
 	private CompleteService smallService; // Bean erstellt sobald notwendig
 	
 	public static void main(String[] args) {
-		SpringApplication.run(SpringCompleteBeanLifeCycleApplication.class, args);
+		SpringApplication.run(SpringCompleteBeanLifeCycleApplication.class, args); //initialisiert den Spring-Kontext und startet die Anwendung.
 	}
 
 	@Bean

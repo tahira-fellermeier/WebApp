@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import edu.fra.uas.Note;
+import edu.fra.uas.model.Note;
 
 @Service
 public class NotenService {
@@ -20,16 +20,18 @@ public class NotenService {
         }
     }
 
-    public void getNote(String modul) {
+    public double getNote(String modul) {
+        double ergebnis = 0;
         for (Note noten : notenListe) {
-            if (noten.getModul() == (modul)) {
-                System.out.println(noten.getNote());
+            if (noten.getModul().equals(modul)) {
+                ergebnis = noten.getNote();
                 break;
             }
         }
+        return ergebnis;
     }
 
-    public void setModul(String modul, String neueModul) {
+    public void updateModul(String modul, String neueModul) {
         for (Note noten : notenListe) {
             if (noten.getModul().equals(modul)) {
                 noten.setModul(neueModul);
@@ -38,7 +40,8 @@ public class NotenService {
         }
     }
 
-    public void setNote(String modul, double neueNote) {
+    public void updateNote(String modul, double neueNote) {
+        System.out.println("setNote() aufgerufen");
         for (Note noten : notenListe) {
             if (noten.getModul().equals(modul)) {
                 noten.setNote(neueNote);
@@ -48,40 +51,26 @@ public class NotenService {
     }
 
     public List<Note> getNotenListe() {
-        /*int i = 1;
-        System.out.println("Ihre Noten: ");
-        for (Noten note : notenListe) {
-            System.out.print(i + ". ");
-            System.out.println(note.toString());
-            ;
-            i++;
-        }*/
         return this.notenListe;
     }
 
-    public void getNotenDurchschnitt() {
+    public double getNotenDurchschnitt() {
         double summe = 0;
         for (Note note : notenListe) {
             summe += note.getNote();
         }
-        double durchschnitt = summe / notenListe.size();
-        System.out.println("Ihr Notendurchschnitt: " + durchschnitt);
+        return (summe / notenListe.size());
+
     }
 
-    public void addNote(String modul, double note) {
+    public Note addNote(String modul, double note) {
         notenListe.add(new Note(modul, note));
-        for (Note noten : notenListe) {
-            if (noten.getModul().equals(modul)) {
-                System.out.println("Neue Note hinzugefügt: " + noten.toString());
-                break;
-            }
-        }
+        return notenListe.get(notenListe.size()-1);
     }
 
     public void deleteNote(String modul) {
         for (Note note : notenListe) {
             if (note.getModul().equals(modul)) {
-                System.out.println("Note gelöscht: " + note.toString());
                 notenListe.remove(note);
                 break;
             }
@@ -104,4 +93,3 @@ public class NotenService {
     }
 
 }
-

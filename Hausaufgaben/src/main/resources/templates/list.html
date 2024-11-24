@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>List of Grades</title>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    <body>
+
+        <h1>List of Grades</h1>
+
+        <div th:if="${notes.size() > 0}">
+            <table>
+                <tr>
+                    <th>Modul</th>
+                    <th>Note</th>
+                </tr>
+                <tr th:each="note : ${notes}">
+                    <td th:text="${note.modul}">Modul</td>
+                    <td th:text="${note.note}">Note</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div th:if="${notes.size() == 0}">
+            <p>Es sind keine Noten vorhanden.</p>
+        </div>
+        
+
+<!--       <h2>Actions</h2>
+    <ul>
+        <li>
+            <form action="/noten/add" method="post">
+                <input type="text" name="modul" placeholder="Modulname" required>
+                <input type="number" name="note" placeholder="Note" step="0.1" required>
+                <button type="submit">Note eintragen</button>
+            </form>
+        </li>
+        <li>
+            <form action="/noten/update" method="post">
+                <input type="text" name="modul" placeholder="Modulname" required>
+                <input type="number" name="neueNote" placeholder="Neue Note" step="0.1" required>
+                <button type="submit">Note ändern</button>
+            </form>
+        </li>
+        <li>
+            <form action="/noten/delete" method="post">
+                <input type="text" name="modul" placeholder="Modulname" required>
+                <button type="submit">Note löschen</button>
+            </form>
+        </li>
+    </ul>--> 
+<!--        <p>You may try one of the following links</p>
+        <ul>
+            <li><a href="/find?id=1">Find user by id</a></li>
+            <li><a href="/add?firstName=Celine&lastName=Clever&email=celine.clever%40example.com&password=123456">Add new user</a></li>
+            <li><a href="/update">Update an existing user using form sending POST method</a></li>
+            <li><a href="/updated?id=2&firstName=Alice&lastName=Abraham&email=alice%40example.com&password=123A456">Update an existing user using GET method</a></li>
+            <li><a href="/delete/3">Delete an existing user by id</a></li>
+        </ul> -->
+        <footer>
+            <small id="today"></small>
+        </footer>
+        <script>
+            var date = new Date();
+            var year = date.getFullYear();
+            document.getElementById("today").innerHTML = "&copy; Tahira Fellermeier Hausaufgaben, "+year;
+        </script> 
+    </body>
+</html>
+

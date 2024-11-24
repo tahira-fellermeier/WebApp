@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Add a grade</title>
+    </head>
+
+    <body>
+        <h1>Add a new Note</h1>
+        <div th:if="${message}">
+            <p th:text="${message}"></p>
+        </div>
+        
+        <form action="/noten/add" method="post">
+            <label for="modul">Modul:</label>
+            <input type="text" id="modul" name="modul" placeholder="Enter module name" required>
+            <br><br>
+            <label for="note">Note:</label>
+            <input type="number" id="note" name="note" placeholder="Enter grade" required step="0.1" min="0" max="6">
+            <br><br>
+            <button type="submit">Add Note</button>
+        </form>
+        <br>
+        <a href="/noten/">Startseite</a>
+        <a href="/noten/list">List of Grades</a>
+
+
+
+    </body>
+</html>
+
+
+
+
+

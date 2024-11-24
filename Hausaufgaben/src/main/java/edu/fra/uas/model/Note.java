@@ -1,18 +1,24 @@
-package edu.fra.uas;
+package edu.fra.uas.model;
 
-//@component
 public class Note {
 
-	public String modul;
-	public double note;
+	private String modul;
+	private double note;
 
 	public Note(String modul, double note) {
 		super();
+		if (note < 1 || note > 6) {
+			throw new IllegalArgumentException("Note muss zwischen 1 und 6 liegen.");
+		}
 		this.modul = modul;
 		this.note = note;
 	}
 
-	@Override
+	public Note() {
+        //TODO Auto-generated constructor stub
+    }
+
+    @Override
 	public String toString() {
 		return this.modul + ": " + this.note;
 	}

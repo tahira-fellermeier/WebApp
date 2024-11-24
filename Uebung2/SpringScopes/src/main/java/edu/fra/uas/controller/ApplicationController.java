@@ -17,17 +17,18 @@ public class ApplicationController {
 	@Autowired
 	ApplicationContext applicationContext;
 	
-	public ApplicationController() {}
+	public ApplicationController() {} //Konstruktor, meistens bei Beans nicht benötigt
 	
-	@RequestMapping(value = "/path1")
+	@RequestMapping(value = "/path1") // diese Methode wird verwendet, wenn eine HTTP-Anfrage an die URL /path1 gesendet wird.
 	public String showPage1() {
-		Session session1 = (Session) applicationContext.getBean(Session.class);
+		Session session1 = (Session) applicationContext.getBean(Session.class); //bei jedem Aufruf dieser Methode wird eine neue Instanz erstellt
 		Session session2 = (Session) applicationContext.getBean(Session.class);
 		log.info(session1.getSessionName());
 		log.info(session2.getSessionName());
-		return "page";
+		return "page"; //Rückgabewert -  eine entsprechende View (z.B. eine HTML-Seite) gerendert wird.
 	}
-	
+	// "page" könnte in eine Datei wie page.html oder page.jsp umgewandelt werden, 
+	// die sich in einem bestimmten Verzeichnis (z. B. src/main/resources/templates für Thymeleaf oder src/main/webapp/WEB-INF/jsp für JSP) befindet.
 	@RequestMapping(value = "/path2")
 	public String showPage2() {
 		Session session1 = (Session) applicationContext.getBean(Session.class);

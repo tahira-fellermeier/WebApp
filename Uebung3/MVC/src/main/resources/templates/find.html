@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"> <!-- xml namespace für thymeleaf-->
     <head>
         <title>User found</title>
     </head>
     <body>
         <h1>User found by ID</h1>
-        <p th:text="${user.email}">Email</p>
+        <p th:text="${user.email}">Email</p> <!-- Textinhalt des Absatzes wird durch den Wert von user.email ersetzt -->
         <br/>
         <a href="/list">Back to user list</a>
         <footer>
