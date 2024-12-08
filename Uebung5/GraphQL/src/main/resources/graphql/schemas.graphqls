@@ -6,13 +6,18 @@ type User {
     firstName: String!
     lastName: String!
     email: String!
-    password: String!
+    password: String! # Hinweis: In der Praxis sollte das Passwort nicht als Teil der API zurückgegeben oder gespeichert werden, um die Sicherheit zu gewährleisten
 }
 
 # Query type defines all the read operations
+
 type Query {
     allUsers: [User]!
     users(count: Int!, offset: Int!): [User]!
+
+# Gibt eine paginierte Liste von Benutzern zurück. 
+# count = die Anzahl der zurückgegebenen Benutzer
+# offset = von welchem Benutzer die Rückgabe beginnen soll
     userById(id: ID): User!
 }
 

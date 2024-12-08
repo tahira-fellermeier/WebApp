@@ -20,30 +20,37 @@ public class UserService {
 
     private static final String baseURI = "http://localhost:8080/graphql";
 
-    private RestClient restClient;
+    private RestClient restClient; // wird für HTTP-Anfragen verwendet
     private HttpSyncGraphQlClient graphQlClient;
+    // synchroner GraphQL-Client, basiert auf RestClient, GraphQL-Anfragen senden
+    // und Antworten empfangen.
 
-    public UserService() {
+    public UserService() { // Initialisierungen der Clients
         restClient = RestClient.create();
         graphQlClient = HttpSyncGraphQlClient.create(restClient);
         graphQlClient = HttpSyncGraphQlClient.builder(restClient).url(baseURI).build();
     }
 
-    private void logExceptionalResponse(ClientGraphQlResponse response) {
+    private void logExceptionalResponse(ClientGraphQlResponse response) { // Fehler logs
         if (!response.isValid()) {
             log.error("Request failure ...");
         }
         List<ResponseError> errors = response.getErrors();
-        for(ResponseError error : errors)
+        for (ResponseError error : errors)
             log.error(error.getMessage());
     }
 
     public List<User> getAllUsers() {
         // GraphQL query syntax
-        String document = "query { allUsers { id role firstName lastName email password } }";
+        String document = "query { allUsers { id role firstName lastName email password } }"; // Query allUsers
+                                                                                              // aufgerufen
         try {
             // retrieve data from GraphQL server
             List<User> usersList = graphQlClient.document(document).retrieveSync("allUsers").toEntityList(User.class);
+            // retrieveSync("allUsers"): Diese Methode führt die Abfrage synchron aus und
+            // erwartet eine Antwort mit dem Namen allUsers.
+            // toEntityList(User.class): Wandelt die Antwort in eine Liste von User
+            // -Objekten um.
             return usersList;
         } catch (FieldAccessException ex) {
             ClientGraphQlResponse response = ex.getResponse();
@@ -54,7 +61,8 @@ public class UserService {
 
     public List<User> getUsers(int count, int offset) {
         // GraphQL query syntax
-        String document = "query { users(count: " + count + ", offset: " + offset + ") { id role firstName lastName email password } }";
+        String document = "query { users(count: " + count + ", offset: " + offset
+                + ") { id role firstName lastName email password } }";
         try {
             // retrieve data from GraphQL server
             List<User> usersList = graphQlClient.document(document).retrieveSync("users").toEntityList(User.class);
@@ -82,16 +90,16 @@ public class UserService {
 
     public User addUser(String role, String firstName, String lastName, String email, String password) {
         // GraphQL mutation syntax
-        String document = "mutation { addUser( " + 
-                                                "role: \"" + role + "\", " + 
-                                                "firstName: \"" + firstName + "\", " + 
-                                                "lastName: \"" + lastName + "\", " + 
-                                                "email: \"" + email + "\", " + 
-                                                "password: \"" + password + "\" " + 
-                                            ") " + 
-                                            "{ id role firstName lastName email password } " + 
-                                   "}";
-        
+        String document = "mutation { addUser( " +
+                "role: \"" + role + "\", " +
+                "firstName: \"" + firstName + "\", " +
+                "lastName: \"" + lastName + "\", " +
+                "email: \"" + email + "\", " +
+                "password: \"" + password + "\" " +
+                ") " +
+                "{ id role firstName lastName email password } " +
+                "}";
+
         try {
             // retrieve data from GraphQL server
             User user = graphQlClient.document(document).retrieveSync("addUser").toEntity(User.class);
@@ -105,16 +113,16 @@ public class UserService {
 
     public User updateUser(int id, String role, String firstName, String lastName, String email, String password) {
         // GraphQL mutation syntax
-        String document = "mutation { updateUser( " + 
-                                                    "id: \"" + id + "\", " +
-                                                    "role: \"" + role + "\", " + 
-                                                    "firstName: \"" + firstName + "\", " + 
-                                                    "lastName: \"" + lastName + "\", " + 
-                                                    "email: \"" + email + "\", " + 
-                                                    "password: \"" + password + "\" " +                              
-                                                ") " + 
-                                                "{ id role firstName lastName email password } " +
-                                   "}";
+        String document = "mutation { updateUser( " +
+                "id: \"" + id + "\", " +
+                "role: \"" + role + "\", " +
+                "firstName: \"" + firstName + "\", " +
+                "lastName: \"" + lastName + "\", " +
+                "email: \"" + email + "\", " +
+                "password: \"" + password + "\" " +
+                ") " +
+                "{ id role firstName lastName email password } " +
+                "}";
         try {
             // retrieve data from GraphQL server
             User user = graphQlClient.document(document).retrieveSync("updateUser").toEntity(User.class);

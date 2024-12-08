@@ -34,24 +34,31 @@ import edu.fra.uas.util.Partition;
 @RestController
 @RequestMapping("/api")
 public class ApiController {
-    
+
     private final Logger log = org.slf4j.LoggerFactory.getLogger(ApiController.class);
 
     @Autowired
     private UserService userService;
 
-    private static final int MAX_USERS = 2;
+    private static final int MAX_USERS = 2; // Konstant
 
-    @GetMapping(value = "/users", 
-                produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<CollectionModel<UserDTO>> list(@RequestParam(required = false) Integer page) {
+        // optionaler Parameter, gibt Seite an, die zurückgegeben werden soll. Wenn er
+        // nicht angegeben wird, ist er null.
+        // User DTO: einfaches Datenobjekt, speziell für Transport von Daten zwischen
+        // verschiedenen Schichten einer Anwendung (z. B. zwischen der
+        // Datenzugriffsschicht und der Präsentationsschicht)
+        // oder zwischen einem Server und einem Client verwendet wird. Er enthält idR
+        // keine Geschäftslogik, sondern dient nur als Container für Daten.
         log.debug("list() is called");
-        List<UserDTO> users = userService.getAllUsersDTO();       
+        List<UserDTO> users = userService.getAllUsersDTO();
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build();
-        } else if (users.size() > MAX_USERS && page == null) {
-            int lastPage = (users.size() / MAX_USERS) + 1;
+        } else if (users.size() > MAX_USERS && page == null) { // Client keine spezifische Seite angefordert
+            int lastPage = (users.size() / MAX_USERS) + 1;// Berechnung der benötigten Seiten um alle benutzer
+                                                          // darzustellen mit max 2 benutzer pro Seite
             Link first = linkTo(methodOn(ApiController.class).list(1)).withRel(IanaLinkRelations.FIRST);
             Link next = linkTo(methodOn(ApiController.class).list(2)).withRel(IanaLinkRelations.NEXT);
             Link last = linkTo(methodOn(ApiController.class).list(lastPage)).withRel(IanaLinkRelations.LAST);
@@ -61,21 +68,26 @@ public class ApiController {
                 user.add(selfLink);
             }
             return new ResponseEntity<>(result, HttpStatus.PARTIAL_CONTENT);
-        } else if (page != null) {
+        } else if (page != null) { // spezifische Seite oder Benutzergruppe vom Client angefordert
             Partition<UserDTO> partition = Partition.ofSize(users, MAX_USERS);
             CollectionModel<UserDTO> result = null;
             Link link = linkTo(methodOn(ApiController.class).list(page)).withSelfRel();
-            try{
+            try {
                 result = CollectionModel.of(partition.get(page - 1)).add(link);
                 for (UserDTO user : result) {
                     Link selfLink = linkTo(ApiController.class).slash("/users/" + user.getId()).withSelfRel();
+                    // für jeden Benutzer wird ein Selbstlink (selfLink) erstellt, der auf die
+                    // spezifische Benutzerressource verweist.
                     user.add(selfLink);
                 }
             } catch (IndexOutOfBoundsException e) {
                 return ResponseEntity.notFound().build();
             }
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
+        } else { // Dieses block kommt drann wenn:
+            // - Die Liste der Benutzer ist nicht leer
+            // - Die Anzahl der Benutzer ist kleiner oder gleich MAX_USERS
+            // - Es wurde keine spezifische Seite angefordert
             Link link = linkTo(methodOn(ApiController.class).list(null)).withSelfRel();
             CollectionModel<UserDTO> result = CollectionModel.of(users).add(link);
             for (UserDTO user : result) {
@@ -86,27 +98,24 @@ public class ApiController {
         }
     }
 
-    @GetMapping(value = "/users/{id}", 
-                produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> find(@PathVariable("id") Long userId) {
         log.debug("find() is called");
         User user = userService.getUserById(userId);
-        if (user == null) {            
+        if (user == null) {
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/users", 
-                 consumes = MediaType.APPLICATION_JSON_VALUE, 
-                 produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> add(@RequestBody User user) {
         log.debug("add() is called");
         String detail = null;
         if (user == null) {
-            detail = "User must not be null";            
+            detail = "User must not be null";
         } else if (user.getRole() == null) {
             detail = "Role must not be null";
         } else if (user.getRole().isEmpty()) {
@@ -129,7 +138,7 @@ public class ApiController {
             detail = "Password must not be empty";
         }
         if (detail != null) {
-            ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, detail); 
+            ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, detail);
             pd.setInstance(URI.create("/users"));
             pd.setTitle("JSON Object Error");
             return ResponseEntity.unprocessableEntity().body(pd);
@@ -140,9 +149,7 @@ public class ApiController {
         return new ResponseEntity<User>(user, headers, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/users/{id}"
-                , consumes = MediaType.APPLICATION_JSON_VALUE
-                , produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> update(@RequestBody User newUser, @PathVariable("id") Long userId) {
         log.debug("update() is called");
@@ -152,7 +159,7 @@ public class ApiController {
         }
         String detail = null;
         if (newUser == null) {
-            detail = "User must not be null";            
+            detail = "User must not be null";
         } else if (newUser.getRole() == null) {
             detail = "Role must not be null";
         } else if (newUser.getRole().isEmpty()) {
@@ -175,7 +182,7 @@ public class ApiController {
             detail = "Password must not be empty";
         }
         if (detail != null) {
-            ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, detail); 
+            ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, detail);
             pd.setInstance(URI.create("/users/" + userId));
             pd.setTitle("JSON Object Error");
             return ResponseEntity.unprocessableEntity().body(pd);
@@ -188,11 +195,10 @@ public class ApiController {
         user = userService.updateUser(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("/restful/users/" + user.getId()));
-        return new ResponseEntity<User>(user, headers,  HttpStatus.OK);
+        return new ResponseEntity<User>(user, headers, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/users/{id}",
-                   produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> delete(@PathVariable("id") Long userId) {
         log.debug("delete() is called");
