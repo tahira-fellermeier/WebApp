@@ -34,8 +34,7 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
-    @GetMapping(value = "/rooms",
-                produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/rooms", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<List<RoomDTO>> getAll() {
         log.info("Get all rooms");
@@ -46,27 +45,24 @@ public class RoomController {
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/rooms/{id}", 
-                produces = MediaType.APPLICATION_JSON_VALUE)               
+    @GetMapping(value = "/rooms/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> getById(@PathVariable("id") Long roomId) {
         log.info("Get room by id: ", roomId);
         Room room = roomService.getById(roomId);
         if (room == null) {
-            return new ResponseEntity<> ("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Room>(room, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/rooms", 
-                 consumes = MediaType.APPLICATION_JSON_VALUE, 
-                 produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/rooms", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> create(@RequestBody String name) {
         log.info("Create new room: ", name);
         if (name == null || name.isEmpty()) {
             String detail = "Room name must not be null or empty";
-            ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, detail); 
+            ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, detail);
             pd.setInstance(URI.create("/rooms"));
             pd.setTitle("Room creation error");
             return ResponseEntity.unprocessableEntity().body(pd);
@@ -75,75 +71,69 @@ public class RoomController {
         return new ResponseEntity<Room>(room, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value = "/rooms/{id}",
-                   produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/rooms/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         log.info("Delete rooms: ", id);
         Room room = roomService.delete(id);
         if (room == null) {
-            return new ResponseEntity<> ("Room was not found for id {" + id + "}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Room was not found for id {" + id + "}", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Room>(room, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/rooms/{id}", 
-                consumes = MediaType.APPLICATION_JSON_VALUE, 
-                produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/rooms/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> join(@PathVariable("id") Long roomId, @RequestBody ChatUser user) {
         log.info("Join room: ", roomId);
         Room room = roomService.getById(roomId);
         if (room == null) {
-            return new ResponseEntity<> ("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
         }
         roomService.addUser(roomId, user);
         return new ResponseEntity<Room>(room, HttpStatus.OK);
     }
 
-    @PatchMapping(value = "/rooms/{id}/users/{userId}", 
-                  produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/rooms/{id}/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> leaveRoom(@PathVariable("id") Long roomId, @PathVariable("userId") Long userId) {
         log.info("Leave room: ", roomId);
         Room room = roomService.getById(roomId);
         if (room == null) {
-            return new ResponseEntity<> ("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
         }
         room = roomService.removeUser(roomId, userId);
         return new ResponseEntity<Room>(room, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/rooms/{id}/users/{userId}/messages", 
-                 consumes = MediaType.APPLICATION_JSON_VALUE, 
-                 produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/rooms/{id}/users/{userId}/messages", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<?> sendMessage(@PathVariable("id") Long roomId, @PathVariable("userId") Long userId, @RequestBody String text) {
+    public ResponseEntity<?> sendMessage(@PathVariable("id") Long roomId, @PathVariable("userId") Long userId,
+            @RequestBody String text) {
         log.info("Send message to room: ", roomId);
         Room room = roomService.getById(roomId);
         if (room == null) {
-            return new ResponseEntity<> ("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
         }
         ChatUser user = roomService.getUserById(roomId, userId);
         if (user == null) {
-            return new ResponseEntity<> ("User was not found for id {" + userId + "}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User was not found for id {" + userId + "}", HttpStatus.NOT_FOUND);
         }
         Message message = roomService.sendMessage(room, userId, text);
         return new ResponseEntity<Message>(message, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/rooms/{id}/users/{userId}/messages", 
-                produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/rooms/{id}/users/{userId}/messages", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> getMessages(@PathVariable("id") Long roomId, @PathVariable("userId") Long userId) {
         log.info("Get messages from room: ", roomId);
         Room room = roomService.getById(roomId);
         if (room == null) {
-            return new ResponseEntity<> ("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Room was not found for id {" + roomId + "}", HttpStatus.NOT_FOUND);
         }
         ChatUser user = roomService.getUserById(roomId, userId);
         if (user == null) {
-            return new ResponseEntity<> ("User was not found for id {" + userId + "}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User was not found for id {" + userId + "}", HttpStatus.NOT_FOUND);
         }
         List<Message> messages = roomService.getMessages(room);
         return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);

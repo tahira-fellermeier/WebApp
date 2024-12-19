@@ -1,0 +1,19 @@
+type Grade {
+    id: Int!
+    modulName: String!
+    grade: Float!
+    cp: Int!
+}
+
+type Query {
+    gradeList: [Grade]!
+    findGrade(modulName: String): Grade!
+    gradeListSpecific(count: Int!, offset: Int!): [Grade]!
+}
+
+type Mutation {
+    addGrade(id: Int!, modulName: String!, grade: Float!, cp: Int!) User!
+    updateGrade(id: Int!, modulName: String!, grade: Float!, cp: Int!) User!
+    deleteGrade(id: Int!): String!
+    average(modulName: String!) Float!
+}

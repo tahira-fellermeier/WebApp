@@ -119,8 +119,9 @@ public class GraphqlController {
     @SubscriptionMapping
     public Flux<StockPrice> stockPrice(@Argument String symbol) {
         log.debug("stockPrice() is called");
-        return Flux.interval(Duration.ofSeconds(1))
+        return Flux.interval(Duration.ofSeconds(1)) //jede 1 Sekunde wird ein neues Objekt mit neuen Attributen übermittelt
                 .map(l -> new StockPrice(symbol, Math.random(), LocalDateTime.now().toString()));
+                //befüllung der Objekte mit dem symbol, ein random Preis, und das datum als String
     }
 
 }

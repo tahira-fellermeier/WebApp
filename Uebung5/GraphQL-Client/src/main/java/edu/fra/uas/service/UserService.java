@@ -42,15 +42,15 @@ public class UserService {
 
     public List<User> getAllUsers() {
         // GraphQL query syntax
-        String document = "query { allUsers { id role firstName lastName email password } }"; // Query allUsers
-                                                                                              // aufgerufen
+        String document = "query { allUsers { id role firstName lastName email password } }";
+        // Query allUsers aufgerufen
         try {
             // retrieve data from GraphQL server
             List<User> usersList = graphQlClient.document(document).retrieveSync("allUsers").toEntityList(User.class);
             // retrieveSync("allUsers"): Diese Methode führt die Abfrage synchron aus und
             // erwartet eine Antwort mit dem Namen allUsers.
-            // toEntityList(User.class): Wandelt die Antwort in eine Liste von User
-            // -Objekten um.
+            // toEntityList(User.class): Wandelt die Antwort in eine Liste von User Objekten
+            // um.
             return usersList;
         } catch (FieldAccessException ex) {
             ClientGraphQlResponse response = ex.getResponse();
@@ -63,6 +63,7 @@ public class UserService {
         // GraphQL query syntax
         String document = "query { users(count: " + count + ", offset: " + offset
                 + ") { id role firstName lastName email password } }";
+                //users() 
         try {
             // retrieve data from GraphQL server
             List<User> usersList = graphQlClient.document(document).retrieveSync("users").toEntityList(User.class);
